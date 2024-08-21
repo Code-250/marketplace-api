@@ -1,0 +1,20 @@
+services:
+  postgres-auth:
+      image: 'postgres:latest'
+      environment:
+        - 'POSTGRES_DB=rich_marketplace'
+        - 'POSTGRES_PASSWORD=R1chardmuny3'
+        - 'POSTGRES_USER=richmunye_admin'
+        - 'PGDATA=/data/postgres'
+      volumes:
+        - ./postgres/auth:/data/postgres
+      restart: always
+
+  auth-service:
+    build:
+      dockerfile: ./Dockerfile
+    env_file: ./.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-auth
